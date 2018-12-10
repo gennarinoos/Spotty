@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		952FBFEC21B55E5200E9DBAF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FBFEB21B55E5200E9DBAF /* AppDelegate.swift */; };
-		952FBFEE21B55E5200E9DBAF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FBFED21B55E5200E9DBAF /* ViewController.swift */; };
+		952FBFEE21B55E5200E9DBAF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FBFED21B55E5200E9DBAF /* MainViewController.swift */; };
 		952FBFF121B55E5200E9DBAF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FBFEF21B55E5200E9DBAF /* Main.storyboard */; };
 		952FBFF321B55E5400E9DBAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 952FBFF221B55E5400E9DBAF /* Assets.xcassets */; };
 		952FBFF621B55E5400E9DBAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FBFF421B55E5400E9DBAF /* LaunchScreen.storyboard */; };
 		952FC00121B55E5400E9DBAF /* SpottyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FC00021B55E5400E9DBAF /* SpottyTests.swift */; };
+		952FC01121B5857200E9DBAF /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FC01021B5857200E9DBAF /* StateManager.swift */; };
+		95B36D8A21B5E0D4006FB893 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */; };
+		95B36D8C21B69B92006FB893 /* StateControllerUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +31,7 @@
 /* Begin PBXFileReference section */
 		952FBFE821B55E5200E9DBAF /* Spotty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spotty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		952FBFEB21B55E5200E9DBAF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		952FBFED21B55E5200E9DBAF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		952FBFED21B55E5200E9DBAF /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		952FBFF021B55E5200E9DBAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		952FBFF221B55E5400E9DBAF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		952FBFF521B55E5400E9DBAF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +39,9 @@
 		952FBFFC21B55E5400E9DBAF /* SpottyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpottyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		952FC00021B55E5400E9DBAF /* SpottyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpottyTests.swift; sourceTree = "<group>"; };
 		952FC00221B55E5400E9DBAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		952FC01021B5857200E9DBAF /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
+		95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateControllerUIButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +83,10 @@
 		952FBFEA21B55E5200E9DBAF /* Spotty */ = {
 			isa = PBXGroup;
 			children = (
-				952FBFEB21B55E5200E9DBAF /* AppDelegate.swift */,
-				952FBFED21B55E5200E9DBAF /* ViewController.swift */,
-				952FBFEF21B55E5200E9DBAF /* Main.storyboard */,
 				952FBFF221B55E5400E9DBAF /* Assets.xcassets */,
-				952FBFF421B55E5400E9DBAF /* LaunchScreen.storyboard */,
+				95B36D8D21B69BA7006FB893 /* Controller */,
 				952FBFF721B55E5400E9DBAF /* Info.plist */,
+				952FC00D21B574DC00E9DBAF /* View */,
 			);
 			path = Spotty;
 			sourceTree = "<group>";
@@ -94,6 +98,27 @@
 				952FC00221B55E5400E9DBAF /* Info.plist */,
 			);
 			path = SpottyTests;
+			sourceTree = "<group>";
+		};
+		952FC00D21B574DC00E9DBAF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				952FBFF421B55E5400E9DBAF /* LaunchScreen.storyboard */,
+				952FBFEF21B55E5200E9DBAF /* Main.storyboard */,
+				95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */,
+				952FBFED21B55E5200E9DBAF /* MainViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		95B36D8D21B69BA7006FB893 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				952FBFEB21B55E5200E9DBAF /* AppDelegate.swift */,
+				952FC01021B5857200E9DBAF /* StateManager.swift */,
+				95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,8 +222,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				952FBFEE21B55E5200E9DBAF /* ViewController.swift in Sources */,
+				952FC01121B5857200E9DBAF /* StateManager.swift in Sources */,
+				952FBFEE21B55E5200E9DBAF /* MainViewController.swift in Sources */,
+				95B36D8C21B69B92006FB893 /* StateControllerUIButton.swift in Sources */,
 				952FBFEC21B55E5200E9DBAF /* AppDelegate.swift in Sources */,
+				95B36D8A21B5E0D4006FB893 /* AudioRecorder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
