@@ -29,6 +29,15 @@ class StateManager {
     let audioRecorder: AudioRecorder
     let recordingSession: AVAudioSession
     
+    private static var sharedStateManager: StateManager = {
+        let instance = StateManager()
+        return instance
+    }()
+    
+    class func sharedInstance() -> StateManager {
+        return sharedStateManager
+    }
+    
     init() {
         audioRecorder = AudioRecorder()
         recordingSession = AVAudioSession.sharedInstance()

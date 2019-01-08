@@ -16,6 +16,10 @@
 		952FC01121B5857200E9DBAF /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FC01021B5857200E9DBAF /* StateManager.swift */; };
 		95B36D8A21B5E0D4006FB893 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */; };
 		95B36D8C21B69B92006FB893 /* StateControllerUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */; };
+		95B36D9021BEC6EA006FB893 /* SpectogramClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D8F21BEC6EA006FB893 /* SpectogramClassifier.swift */; };
+		95B36D9221BECDEE006FB893 /* AudioProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D9121BECDEE006FB893 /* AudioProcessor.swift */; };
+		95B36D9621DBCA61006FB893 /* FrequencyUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D9521DBCA61006FB893 /* FrequencyUITableViewCell.swift */; };
+		95B36D9821DC0983006FB893 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B36D9721DC0983006FB893 /* MainTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +46,10 @@
 		952FC01021B5857200E9DBAF /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateControllerUIButton.swift; sourceTree = "<group>"; };
+		95B36D8F21BEC6EA006FB893 /* SpectogramClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectogramClassifier.swift; sourceTree = "<group>"; };
+		95B36D9121BECDEE006FB893 /* AudioProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProcessor.swift; sourceTree = "<group>"; };
+		95B36D9521DBCA61006FB893 /* FrequencyUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyUITableViewCell.swift; sourceTree = "<group>"; };
+		95B36D9721DC0983006FB893 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +115,8 @@
 				952FBFEF21B55E5200E9DBAF /* Main.storyboard */,
 				95B36D8B21B69B92006FB893 /* StateControllerUIButton.swift */,
 				952FBFED21B55E5200E9DBAF /* MainViewController.swift */,
+				95B36D9721DC0983006FB893 /* MainTableViewController.swift */,
+				95B36D9521DBCA61006FB893 /* FrequencyUITableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -114,11 +124,21 @@
 		95B36D8D21B69BA7006FB893 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				95B36D8E21BEC625006FB893 /* Classification */,
 				952FBFEB21B55E5200E9DBAF /* AppDelegate.swift */,
 				952FC01021B5857200E9DBAF /* StateManager.swift */,
 				95B36D8921B5E0D4006FB893 /* AudioRecorder.swift */,
+				95B36D9121BECDEE006FB893 /* AudioProcessor.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		95B36D8E21BEC625006FB893 /* Classification */ = {
+			isa = PBXGroup;
+			children = (
+				95B36D8F21BEC6EA006FB893 /* SpectogramClassifier.swift */,
+			);
+			path = Classification;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,11 +242,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95B36D9821DC0983006FB893 /* MainTableViewController.swift in Sources */,
 				952FC01121B5857200E9DBAF /* StateManager.swift in Sources */,
 				952FBFEE21B55E5200E9DBAF /* MainViewController.swift in Sources */,
 				95B36D8C21B69B92006FB893 /* StateControllerUIButton.swift in Sources */,
+				95B36D9621DBCA61006FB893 /* FrequencyUITableViewCell.swift in Sources */,
 				952FBFEC21B55E5200E9DBAF /* AppDelegate.swift in Sources */,
+				95B36D9221BECDEE006FB893 /* AudioProcessor.swift in Sources */,
 				95B36D8A21B5E0D4006FB893 /* AudioRecorder.swift in Sources */,
+				95B36D9021BEC6EA006FB893 /* SpectogramClassifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

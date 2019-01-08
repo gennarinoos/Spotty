@@ -6,12 +6,12 @@
 //  Copyright © 2018 Gennaro. All rights reserved.
 //
 
-import Foundation
 import AVFoundation
 
 enum RecorderError: Error {
     case recordingInProgress
     case audioUnitNotReady(code: Int)
+    case genericError(code: Int)
 }
 
 class AudioRecorder {
@@ -21,10 +21,6 @@ class AudioRecorder {
     var audioUnit: AudioUnit? = nil
     
     var sampleRate: Double = 44100.0    // default audio sample rate
-    let circBuffSize = 32768            // lock-free circular fifo/buffer size
-    var circBuffer = [Float](repeating: 0, count: 32768)  // for incoming samples
-    var circInIdx: Int =  0
-    var audioLevel: Float  = 0.0
     
     private var interrupted = false // for restart from audio interruption notification
     private var hwSRate = 48000.0   // guess of device hardware sample rate
@@ -34,6 +30,11 @@ class AudioRecorder {
     private let outputBus: UInt32 =  0
     private let inputBus: UInt32 =  1
     
+    let delegate: AudioRecorderDelegate = AudioProcessor()
+    
+    func audioBuffer() -> ArraySlice<Float> {
+        return delegate.buffer(ofSize: 256)
+    }
     
     func startRecording() throws {
         guard !isRecording else {
@@ -80,7 +81,7 @@ class AudioRecorder {
             try setupAudioUnit() // setup once
         }
         guard let au = self.audioUnit else {
-            throw RecorderError.audioUnitNotReady(code: Int(err))
+            throw RecorderError.audioUnitNotReady(code: Int(kAudioUnitErr_Uninitialized))
         }
         
         err = AudioUnitInitialize(au)
@@ -115,15 +116,15 @@ class AudioRecorder {
         osErr = AudioComponentInstanceNew(component, &tempAudioUnit)
         self.audioUnit = tempAudioUnit
         
-        guard let au = self.audioUnit else {
-            throw RecorderError.audioUnitNotReady(code: Int(osErr))
+        guard let audioUnit = self.audioUnit else {
+            throw RecorderError.audioUnitNotReady(code: Int(kAudioUnitErr_Uninitialized))
         }
         
         // Enable I/O for input.
         
         var one_ui32: UInt32 = 1
         
-        osErr = AudioUnitSetProperty(au,
+        osErr = AudioUnitSetProperty(audioUnit,
                                      kAudioOutputUnitProperty_EnableIO,
                                      kAudioUnitScope_Input,
                                      inputBus,
@@ -144,14 +145,14 @@ class AudioRecorder {
             mReserved:          UInt32(0)
         )
         
-        osErr = AudioUnitSetProperty(au,
+        osErr = AudioUnitSetProperty(audioUnit,
                                      kAudioUnitProperty_StreamFormat,
                                      kAudioUnitScope_Input,
                                      outputBus,
                                      &streamFormatDesc,
                                      UInt32(MemoryLayout<AudioStreamBasicDescription>.size))
         
-        osErr = AudioUnitSetProperty(au,
+        osErr = AudioUnitSetProperty(audioUnit,
                                      kAudioUnitProperty_StreamFormat,
                                      kAudioUnitScope_Output,
                                      inputBus,
@@ -163,7 +164,7 @@ class AudioRecorder {
                                      inputProcRefCon:
                 UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
         
-        osErr = AudioUnitSetProperty(au,
+        osErr = AudioUnitSetProperty(audioUnit,
                                      AudioUnitPropertyID(kAudioOutputUnitProperty_SetInputCallback),
                                      AudioUnitScope(kAudioUnitScope_Global),
                                      inputBus,
@@ -171,7 +172,7 @@ class AudioRecorder {
                                      UInt32(MemoryLayout<AURenderCallbackStruct>.size))
         
         // Ask CoreAudio to allocate buffers on render.
-        osErr = AudioUnitSetProperty(au,
+        osErr = AudioUnitSetProperty(audioUnit,
                                      AudioUnitPropertyID(kAudioUnitProperty_ShouldAllocateBuffer),
                                      AudioUnitScope(kAudioUnitScope_Output),
                                      inputBus,
@@ -213,7 +214,7 @@ class AudioRecorder {
         inTimeStamp,
         inBusNumber,
         frameCount,
-        ioData ) -> OSStatus in
+        ioData) -> OSStatus in
         
         let audioObject = unsafeBitCast(inRefCon, to: AudioRecorder.self)
         var err: OSStatus = noErr
@@ -232,43 +233,13 @@ class AudioRecorder {
                                   inBusNumber,
                                   frameCount,
                                   &bufferList)
+        } else {
+            return kAudioUnitErr_Uninitialized
         }
         
-        audioObject.processMicrophoneBuffer(inputDataList: &bufferList,
-                                            frameCount: UInt32(frameCount))
-        return 0
-    }
-    
-    //
-    // process RemoteIO Buffer from mic input
-    //
-    func processMicrophoneBuffer(inputDataList: UnsafeMutablePointer<AudioBufferList>,
-                                 frameCount: UInt32) {
-        let inputDataPtr = UnsafeMutableAudioBufferListPointer(inputDataList)
-        let mBuffers : AudioBuffer = inputDataPtr[0]
-        let count = Int(frameCount)
-        
-        let bufferPointer = UnsafeMutableRawPointer(mBuffers.mData)
-        if let bptr = bufferPointer {
-            let dataArray = bptr.assumingMemoryBound(to: Float.self)
-            var sum : Float = 0.0
-            var j = self.circInIdx
-            let m = self.circBuffSize
-            for i in 0..<(count/2) {
-                let x = Float(dataArray[i+i  ])   // copy left  channel sample
-                let y = Float(dataArray[i+i+1])   // copy right channel sample
-                self.circBuffer[j    ] = x
-                self.circBuffer[j + 1] = y
-                j += 2 ; if j >= m { j = 0 }      // into circular buffer
-                sum += x * x + y * y
-            }
-            self.circInIdx = j              // circular index will always be less than size
-            if sum > 0.0 && count > 0 {
-                let tmp = 5.0 * (logf(sum / Float(count)) + 20.0)
-                let r : Float = 0.2
-                audioLevel = r * tmp + (1.0 - r) * audioLevel
-            }
-        }
+        audioObject.delegate.process(audioBufferList: &bufferList,
+                                     frameCount: UInt32(frameCount))
+        return err
     }
     
     func stopRecording() {
